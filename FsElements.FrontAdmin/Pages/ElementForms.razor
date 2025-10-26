@@ -1,0 +1,133 @@
+﻿@page "/ElementForms/{categoryId}"
+@using FsElements.FrontAdmin.Models
+@using FsElements.FrontAdmin.Services
+@attribute [Microsoft.AspNetCore.Authorization.Authorize(Roles = "Admin")]
+
+@inject IElementCategoriesService CategoriesService
+@inject IJSRuntime JsRuntime
+@inject IConfiguration Configuration
+
+<h3>Forms for <b>@categoryName</b></h3>
+
+<a class="mt-2 mb-3" href="/">Back</a>
+
+@if (CategoryId != null)
+{
+    <EditForm class="mb-3" Model="Input" OnSubmit="OnSaveItem">
+        <div>Add data:</div>
+        <div class="row">
+            <div class="col-1 text-end">Name:</div>
+            <div class="col-3">
+                <InputText @bind-Value="Input.Name" />
+            </div>
+            <div class="col-1">Image:</div>
+            <div class="col-3">
+                <InputFile OnChange="OnFileSelected" />
+                @if (showSelectFileError)
+                {
+                    <span class="validation-message">Please select file</span>
+                }
+            </div>
+            <div class="col-1">
+                <button class="btn btn-primary">Add</button>
+            </div>
+        </div>
+    </EditForm>
+}
+
+@if (forms != null)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <td>Id</td>
+                <td>Name</td>
+                <td>Image</td>
+                <td></td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var form in forms)
+            {
+                <tr>
+                    <td>@form.Id</td>
+                    <td>@form.Name</td>
+                    <td>
+                        <img class="thumb" src="@(formsApiClientUrl + form.Image)" />
+                    </td>
+                    <td>
+                        <div>
+                            <button class="btn btn-danger btn-sm" @onclick="() => OnDeleteClick(form.Id)">Delete</button>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<style>
+    .thumb {
+        height: 75px;
+    }
+</style>
+
+@code {
+    [Parameter]
+    public string? CategoryId { get; set; }
+    private string categoryName = "";
+    private List<ElementFormDto>? forms;
+    private InputModel Input = new();
+    private IBrowserFile? browserFile;
+    private bool showSelectFileError = false;
+    private string formsApiClientUrl = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        formsApiClientUrl = Configuration.GetValue<string>("Apis:FormsApiClient")!;
+        if (CategoryId != null)
+        {
+            await LoadData();
+            // show category name?
+        }
+    }
+
+    private async Task LoadData()
+    {
+        forms = await CategoriesService.GetFormsByCategoryId(CategoryId!);
+    }
+
+    private async Task OnDeleteClick(string id)
+    {
+        bool confirmed = await JsRuntime.InvokeAsync<bool>("confirm", "Do you want to delete?");
+        if (confirmed)
+        {
+            await CategoriesService.DeleteForm(id);
+            await LoadData();
+        }
+    }
+
+    private void OnFileSelected(InputFileChangeEventArgs args)
+    {
+        browserFile = args.File;
+        showSelectFileError = false;
+    }
+
+    private async Task OnSaveItem(EditContext args)
+    {
+        if (browserFile == null)
+        {
+            showSelectFileError = true;
+            return;
+        }
+
+        await CategoriesService.AddForm(Input.Name!, CategoryId!, browserFile);
+        Input = new();
+        await LoadData();
+    }
+
+    private sealed class InputModel
+    {
+        public string Name { get; set; } = "";
+    }
+}

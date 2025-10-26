@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FsElements.Common", "FsElem
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FsElements.FormsApi", "FsElements.FormsApi\FsElements.FormsApi.csproj", "{00E369CE-1DF4-4FA9-8C5D-5EA012DF4BC5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FsElements.FrontAdmin", "FsElements.FrontAdmin\FsElements.FrontAdmin.csproj", "{455ED4B9-BCA9-4D7B-B5CF-B0AD9113EBA9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{00E369CE-1DF4-4FA9-8C5D-5EA012DF4BC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{00E369CE-1DF4-4FA9-8C5D-5EA012DF4BC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{00E369CE-1DF4-4FA9-8C5D-5EA012DF4BC5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{455ED4B9-BCA9-4D7B-B5CF-B0AD9113EBA9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{455ED4B9-BCA9-4D7B-B5CF-B0AD9113EBA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{455ED4B9-BCA9-4D7B-B5CF-B0AD9113EBA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{455ED4B9-BCA9-4D7B-B5CF-B0AD9113EBA9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

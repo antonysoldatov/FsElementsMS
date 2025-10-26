@@ -1,0 +1,19 @@
+﻿@page "/"
+@using FsElements.FrontAdmin.Services
+
+<PageTitle>Home</PageTitle>
+
+@if (!CurrentUserService.IsAuthenticated)
+{
+    <h1>Please login</h1>
+}
+else
+{
+    <ElementCategories></ElementCategories>
+}
+
+
+@code {
+    [CascadingParameter]
+    public ICurrentUserService CurrentUserService { get; set; }
+}

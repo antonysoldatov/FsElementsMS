@@ -1,11 +1,14 @@
-﻿using FsElements.Common.Services;
+﻿using FsElements.Common;
+using FsElements.Common.Services;
 using FsElements.FormsApi.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FsElements.FormsApi.Controllers
 {
     [ApiController]
     [Route("[controller]/[action]")]
+    [Authorize(Roles = Roles.Admin)]
     public class FormController : ControllerBase
     {
         private readonly IMongoRepository<ElementForm> formsRepository;
@@ -17,10 +20,22 @@ namespace FsElements.FormsApi.Controllers
             this.fileManageService = fileManageService;
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<List<ElementFormDto>>> GetAll()
         {
             var list = await formsRepository.GetAllAsync();
+            var dtos = list.Select(f => f.ToDto()).ToList();
+            return Ok(dtos);
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("{categoryId}")]
+        public async Task<ActionResult<List<ElementFormDto>>> GetByCategoryId(string categoryId)
+        {
+            var categoryIdGuid = new Guid(categoryId);
+            var list = await formsRepository.GetAsync(f => f.ElementCategoryId == categoryIdGuid);
             var dtos = list.Select(f => f.ToDto()).ToList();
             return Ok(dtos);
         }
@@ -42,9 +57,10 @@ namespace FsElements.FormsApi.Controllers
         }
 
         [HttpDelete]
-        public async Task<ActionResult> Delete([FromBody] DeleteElementFormDto dto)
+        [Route("{id}")]
+        public async Task<ActionResult> Delete(string id)
         {
-            var form = await formsRepository.GetByIdAsync(new Guid(dto.Id));
+            var form = await formsRepository.GetByIdAsync(new Guid(id));
             if (form == null)
             {
                 return NotFound();

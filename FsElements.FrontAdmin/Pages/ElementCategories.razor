@@ -1,0 +1,93 @@
+﻿@using FsElements.FrontAdmin.Models
+@using FsElements.FrontAdmin.Services
+@using System.ComponentModel.DataAnnotations
+@inject IElementCategoriesService CategoriesService
+@inject IJSRuntime JsRuntime
+
+<h3>ElementCategories</h3>
+
+
+<EditForm Model="Input" OnValidSubmit="OnAddCategory">
+    <DataAnnotationsValidator />
+    <div class="row mb-2">
+        <div class="col-1">
+            <span>Name:</span>
+        </div>
+        <div class="col">
+            <InputText @bind-Value="Input.Name" />
+            <ValidationMessage For="() => Input.Name" class="text-danger" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <button class="btn btn-primary" type="submit">Add</button>
+        </div>
+    </div>
+</EditForm>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    @if (categories != null)
+    {
+        @foreach (var c in categories)
+        {
+            <tr>
+                <td>@c.Id</td>
+                <td>@c.Name</td>
+                <td>
+                    <a href="/ElementForms/@c.Id">Forms</a>
+                </td>
+                <td>
+                    <div>
+                        <button class="btn btn-danger btn-sm" @onclick="() => OnDeleteClick(c.Id)">Delete</button>
+                    </div>
+                </td>
+            </tr>
+        }
+    }
+</table>
+
+@code {
+    private List<ElementCategoryDto>? categories;
+    private InputModel Input { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await ReloadData();
+    }
+
+    private async Task ReloadData()
+    {
+        categories = await CategoriesService.GetAllCategories();
+    }
+
+    private async Task OnDeleteClick(string id)
+    {
+        bool confirmed = await JsRuntime.InvokeAsync<bool>("confirm", "Do you want to delete?");
+        if (confirmed)
+        {
+            await CategoriesService.DeleteCategory(id);
+            await ReloadData();
+        }
+    }
+
+    private async Task OnAddCategory(EditContext args)
+    {
+        await CategoriesService.AddCategory(Input.Name);
+        Input = new();
+        await ReloadData();
+    }
+
+    private sealed class InputModel
+    {
+        [Required]
+        public string Name { get; set; } = "";
+    }
+}

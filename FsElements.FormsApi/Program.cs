@@ -36,6 +36,21 @@ builder.Services.AddTransient<IMongoRepository<ElementCategory>, MongoRepository
 builder.Services.AddTransient<IMongoRepository<ElementForm>, MongoRepository<ElementForm>>();
 builder.Services.AddScoped<IFileManageService, FileManageService>();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificClient",
+                builder => builder.WithOrigins("http://example.com")
+                                  .AllowAnyMethod()
+                                  .AllowAnyHeader());
+
+    //NOTE: for development purposes only. Update for production use.    
+    options.AddDefaultPolicy(builder =>
+    {
+        builder.AllowAnyOrigin()
+               .AllowAnyMethod()
+               .AllowAnyHeader();
+    });
+});
 
 var app = builder.Build();
 
@@ -44,6 +59,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.UseCors();
 }
 
 app.UseHttpsRedirection();
@@ -56,6 +72,8 @@ app.UseStaticFiles(new StaticFileOptions
 });
 
 app.MapControllers();
+
+app.UseCors("AllowSpecificClient");
 
 app.UseAuthentication();
 app.UseAuthorization();

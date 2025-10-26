@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using FsElements.Common;
+using Microsoft.AspNetCore.Identity;
 using System.Data;
 
 namespace FsElements.Auth.Data

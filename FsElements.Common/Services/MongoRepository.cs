@@ -1,5 +1,6 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Driver;
+using System.Linq.Expressions;
 
 namespace FsElements.Common.Services
 {
@@ -15,6 +16,11 @@ namespace FsElements.Common.Services
         public async Task<List<T>> GetAllAsync()
         {
             return await _collection.Find(_ => true).ToListAsync();
+        }
+
+        public async Task<List<T>> GetAsync(Expression<Func<T, bool>> filter)
+        {
+            return await _collection.Find(filter).ToListAsync();
         }
 
         public async Task<T> GetByIdAsync(Guid id)

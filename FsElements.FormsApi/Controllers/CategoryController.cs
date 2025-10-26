@@ -8,7 +8,7 @@ namespace FsElements.FormsApi.Controllers
 {    
     [ApiController]
     [Route("[controller]/[action]")]
-    //[Authorize(Roles = Roles.Admin)]
+    [Authorize(Roles = Roles.Admin)]
     public class CategoryController : ControllerBase
     {
         private readonly IMongoRepository<ElementCategory> categoryRepository;
@@ -40,9 +40,10 @@ namespace FsElements.FormsApi.Controllers
         }
 
         [HttpDelete]
-        public async Task<ActionResult> Delete([FromBody] DeleteElementCategoryDto dto)
+        [Route("{id}")]
+        public async Task<ActionResult> Delete(string id)
         {
-            var category = await categoryRepository.GetByIdAsync(new Guid(dto.Id));
+            var category = await categoryRepository.GetByIdAsync(new Guid(id));
             if (category == null)
             {
                 return NotFound();

@@ -28,24 +28,6 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddAuthorization();
 
-// Add services to the container.
-//builder.Services.AddDbContext<FsDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DatabaseConnection")));
-//builder.Services.AddIdentityCore<FsUser>(options =>
-//    {
-//        options.SignIn.RequireConfirmedAccount = false;
-//        options.Password.RequireDigit = false;
-//        options.Password.RequireLowercase = false;
-//        options.Password.RequireNonAlphanumeric = false;
-//        options.Password.RequireUppercase = false;
-//        options.Password.RequiredLength = 6;
-//        options.Password.RequiredUniqueChars = 1;
-//    })
-//    .AddRoles<IdentityRole>()
-//    .AddUserManager<UserManager<FsUser>>()    
-//    .AddEntityFrameworkStores<FsDbContext>()
-//    .AddSignInManager()
-//    .AddDefaultTokenProviders();
-
 builder.Services.AddSingleton<IMongoClient>(s => new MongoClient(builder.Configuration.GetConnectionString("MongoConnection")));
 builder.Services.AddIdentityCore<ApplicationUser>(options =>
     {
@@ -69,6 +51,22 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificClient",
+                builder => builder.WithOrigins("http://example.com")
+                                  .AllowAnyMethod()
+                                  .AllowAnyHeader());
+
+    //NOTE: for development purposes only. Update for production use.    
+    options.AddDefaultPolicy(builder =>
+    {
+        builder.AllowAnyOrigin()
+               .AllowAnyMethod()
+               .AllowAnyHeader();
+    });
+});
+
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
@@ -82,10 +80,13 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.UseCors();
 }
 
 //app.MapIdentityApi<ApplicationUser>();
 app.MapControllers();
+
+app.UseCors("AllowSpecificClient");
 
 app.UseHttpsRedirection();
 app.UseAuthentication();
