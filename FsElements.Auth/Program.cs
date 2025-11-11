@@ -10,23 +10,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddSingleton<IEmailSender<ApplicationUser>, DummyEmailSender>();
 
-builder.Services.AddAuthentication(options =>
-    {
-        options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-    })
-    .AddJwtBearer(options =>
-    {
-        options.TokenValidationParameters.ValidIssuer = builder.Configuration["Jwt:Issuer"];
-        options.TokenValidationParameters.ValidAudience = builder.Configuration["Jwt:Audience"];
-        options.TokenValidationParameters.IssuerSigningKey = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(
-            System.Text.Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!));
-    });
-
+builder.Services.AddAuthenticationWithJwtBearer(builder.Configuration);
 builder.Services.AddAuthorization();
 
-builder.Services.AddSingleton<IMongoClient>(s => new MongoClient(builder.Configuration.GetConnectionString("MongoConnection")));
+builder.Services.AddMongoClientWithDatabase(builder.Configuration);
 builder.Services.AddIdentityCore<ApplicationUser>(options =>
     {
         options.SignIn.RequireConfirmedAccount = false;
@@ -49,22 +36,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddRabbitMqMassTransit();
-
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowSpecificClient",
-                builder => builder.WithOrigins("http://example.com")
-                                  .AllowAnyMethod()
-                                  .AllowAnyHeader());
-
-    //NOTE: for development purposes only. Update for production use.    
-    options.AddDefaultPolicy(builder =>
-    {
-        builder.AllowAnyOrigin()
-               .AllowAnyMethod()
-               .AllowAnyHeader();
-    });
-});
+builder.Services.AddCorsWithAllowClientPolicy("AllowSpecificClient");
 
 var app = builder.Build();
 
@@ -79,7 +51,6 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-    app.UseCors();
 }
 
 //app.MapIdentityApi<ApplicationUser>();

@@ -7,17 +7,7 @@ using MongoDB.Driver;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
-    {
-        options.RequireHttpsMetadata = false;
-
-        options.TokenValidationParameters.ValidIssuer = builder.Configuration["Jwt:Issuer"];
-        options.TokenValidationParameters.ValidAudience = builder.Configuration["Jwt:Audience"];
-        options.TokenValidationParameters.IssuerSigningKey = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(
-            System.Text.Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!));
-    });
-
+builder.Services.AddAuthenticationWithJwtBearer(builder.Configuration);
 builder.Services.AddAuthorization();
 
 builder.Services.AddControllers();
@@ -25,30 +15,12 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddSingleton<IMongoClient>(s => new MongoClient(builder.Configuration.GetValue<string>("MongoDbSettings:ConnectionString")));
-builder.Services.AddSingleton<IMongoDatabase>(s =>
-{
-    var client = s.GetRequiredService<IMongoClient>();
-    return client.GetDatabase(builder.Configuration.GetValue<string>("MongoDbSettings:DatabaseName")!);
-});
+builder.Services.AddMongoClientWithDatabase(builder.Configuration);
+builder.Services.AddCorsWithAllowClientPolicy("AllowSpecificClient");
+builder.Services.AddRabbitMqMassTransit();
 builder.Services.AddTransient<IMongoRepository<Seller>, MongoRepository<Seller>>();
 
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowSpecificClient",
-                builder => builder.WithOrigins("http://example.com")
-                                  .AllowAnyMethod()
-                                  .AllowAnyHeader());
 
-    //NOTE: for development purposes only. Update for production use.    
-    options.AddDefaultPolicy(builder =>
-    {
-        builder.AllowAnyOrigin()
-               .AllowAnyMethod()
-               .AllowAnyHeader();
-    });
-});
-builder.Services.AddRabbitMqMassTransit();
 
 
 var app = builder.Build();
@@ -58,7 +30,6 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-    app.UseCors();
 }
 
 app.UseHttpsRedirection();

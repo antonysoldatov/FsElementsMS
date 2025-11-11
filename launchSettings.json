@@ -6,7 +6,8 @@
       "serviceActions": {
         "fselements.auth": "StartDebugging",
         "fselements.formsapi": "StartDebugging",
-        "fselements.ordersapi": "StartDebugging"
+        "fselements.ordersapi": "StartDebugging",
+        "fselements.elementsapi": "StartDebugging"
       }
     }
   }

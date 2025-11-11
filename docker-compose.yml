@@ -31,6 +31,13 @@ services:
       dockerfile: FsElements.OrdersApi/Dockerfile
 
 
+  fselements.elementsapi:
+    image: ${DOCKER_REGISTRY-}fselementselementsapi
+    build:
+      context: .
+      dockerfile: FsElements.ElementsApi/Dockerfile
+
 volumes:
     rabbitmqdata:
+
 
