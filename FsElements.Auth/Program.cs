@@ -3,10 +3,8 @@ using FsElements.Auth.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
-using MongoDB.Driver.Core.Configuration;
+using FsElements.Common.Extension;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -50,6 +48,7 @@ builder.Services.AddIdentityCore<ApplicationUser>(options =>
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddRabbitMqMassTransit();
 
 builder.Services.AddCors(options =>
 {

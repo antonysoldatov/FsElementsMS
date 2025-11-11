@@ -1,0 +1,36 @@
+services:
+
+  rabbitmq:
+    image: rabbitmq:management
+    container_name: my-rabbitmq
+    ports:
+       - 5672:5672
+       - 15672:15672
+    hostname: rabbitmq
+    volumes:
+       - rabbitmqdata:/var/lib/rabbitmq
+  
+
+  fselements.auth:
+    image: ${DOCKER_REGISTRY-}fselementsauth
+    build:
+      context: .
+      dockerfile: FsElements.Auth/Dockerfile
+
+  fselements.formsapi:
+    image: ${DOCKER_REGISTRY-}fselementsformsapi
+    build:
+      context: .
+      dockerfile: FsElements.FormsApi/Dockerfile
+
+
+  fselements.ordersapi:
+    image: ${DOCKER_REGISTRY-}fselementsordersapi
+    build:
+      context: .
+      dockerfile: FsElements.OrdersApi/Dockerfile
+
+
+volumes:
+    rabbitmqdata:
+
