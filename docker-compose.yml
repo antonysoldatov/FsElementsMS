@@ -37,6 +37,15 @@ services:
       context: .
       dockerfile: FsElements.ElementsApi/Dockerfile
 
+
+  # fselements.frontadmin:
+  #   image: ${DOCKER_REGISTRY-}fselementsfrontadmin
+  #   build:
+  #     context: FsElements.FrontAdmin/.
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - 6080:80
+
 volumes:
     rabbitmqdata:
 
