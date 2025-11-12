@@ -19,8 +19,8 @@ builder.Services.AddMongoClientWithDatabase(builder.Configuration);
 builder.Services.AddCorsWithAllowClientPolicy("AllowSpecificClient");
 builder.Services.AddRabbitMqMassTransit();
 builder.Services.AddTransient<IMongoRepository<Seller>, MongoRepository<Seller>>();
-
-
+builder.Services.AddTransient<IMongoRepository<Element>, MongoRepository<Element>>();
+builder.Services.AddTransient<IMongoRepository<Order>, MongoRepository<Order>>();
 
 
 var app = builder.Build();

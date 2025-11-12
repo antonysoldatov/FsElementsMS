@@ -1,6 +1,8 @@
 ﻿using FsElements.Common;
+using FsElements.Common.MassTransit;
 using FsElements.Common.Services;
 using FsElements.ElementsApi.Entities;
+using MassTransit;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.JsonWebTokens;
@@ -13,10 +15,12 @@ namespace FsElements.ElementsApi.Controllers
     public class ElementController : Controller
     {
         private readonly IMongoRepository<Element> elementsRepository;
+        private readonly IPublishEndpoint publishEndpoint;
 
-        public ElementController(IMongoRepository<Element> elementsRepository)
+        public ElementController(IMongoRepository<Element> elementsRepository, IPublishEndpoint publishEndpoint)
         {
             this.elementsRepository = elementsRepository;
+            this.publishEndpoint = publishEndpoint;
         }
 
         [HttpGet]
@@ -72,6 +76,8 @@ namespace FsElements.ElementsApi.Controllers
                 }
                 await elementsRepository.UpdateAsync(element.Id, element);
             }
+
+            await publishEndpoint.Publish(new ElementAddOrEditMessage(element.Id, element.UniqueCode, element.Name));
 
             return Ok();
         }
