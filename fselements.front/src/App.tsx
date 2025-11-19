@@ -2,22 +2,26 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import MainLayout from './layouts/MainLayout'
 import HomePage from './pages/HomePage'
 import SignInPage from './pages/SignIn/SignInPage'
-import { UserContextProvider } from './storage/UserContext'
 import SignOutPage from './pages/SignOutPage'
+import MyElementsPage from './pages/Seller/MyElementsPage'
+import AddEditElementPage from './pages/Seller/AddEditElementPage'
+import MultiContextProvider from './storage/MultiContextProvider'
 
 function App() {
     return (
-        <UserContextProvider>
-            <BrowserRouter>
-                <Routes>
-                    <Route path="/" element={<MainLayout />}>
-                        <Route index element={<HomePage />} />
-                        <Route path="signin" element={<SignInPage />} />
-                        <Route path="signout" element={<SignOutPage />} />
-                    </Route>
-                </Routes>
-            </BrowserRouter>
-        </UserContextProvider>
+        <MultiContextProvider>
+                <BrowserRouter>
+                    <Routes>
+                        <Route path="/" element={<MainLayout />}>
+                            <Route index element={<HomePage />} />
+                            <Route path="signin" element={<SignInPage />} />
+                            <Route path="signout" element={<SignOutPage />} />
+                            <Route path="sellerelements" element={<MyElementsPage />} />
+                            <Route path="sellereditelement/:id?" element={<AddEditElementPage />} />
+                        </Route>
+                    </Routes>
+                </BrowserRouter>
+        </MultiContextProvider>
     )
 }
 

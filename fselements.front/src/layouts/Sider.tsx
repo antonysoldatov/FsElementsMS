@@ -61,8 +61,6 @@ function Sider({ menuOpen, onToggleMenu, isPermanent }: SiderProps) {
 
     const user = useUser();
 
-    console.log("Sider user:", user);
-
     const userMenuItems: MenuItem[] = [];
     if (user.isAuthenticated) {
         if (user.role === "Seller") {

@@ -26,7 +26,8 @@ namespace FsElements.ElementsApi.Controllers
         [HttpGet]
         public async Task<ActionResult<List<ElementDto>>> GetBySeller(string sellerId)
         {
-            var elements = await elementsRepository.GetAsync(x => x.SellerId.ToString() == sellerId);
+            var sellerIdGuid = Guid.Parse(sellerId);
+            var elements = await elementsRepository.GetAsync(x => x.SellerId == sellerIdGuid);
             var list = elements.Select(x => x.ToDto()).ToList();
             return Ok(list);
         }
