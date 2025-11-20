@@ -148,7 +148,7 @@ const makeOrder = async (order: MakeOrder): Promise<void> => {
 
 const getMyOrders = async (sellerId: string): Promise<Order[]> => {
     try {
-        const response: AxiosResponse<Order[]> = await axios.get(ORDERS_BASE_URL + `/Order/GetBySellerId?id=${sellerId}`);
+        const response: AxiosResponse<Order[]> = await axios.get(ORDERS_BASE_URL + `/Order/GetBySellerId/${sellerId}`);
         return response.data;
     } catch (error) {
         console.error("Error:", error);

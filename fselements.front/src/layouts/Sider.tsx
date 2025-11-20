@@ -4,6 +4,7 @@ import LoginIcon from '@mui/icons-material/Login';
 import LogoutIcon from '@mui/icons-material/Logout';
 import AutoAwesomeMotionIcon from '@mui/icons-material/AutoAwesomeMotion';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import ShopTwoIcon from '@mui/icons-material/ShopTwo';
 import { useUser } from "../storage/UserContext";
 import { Link } from "react-router-dom";
 import { useOrder } from "../storage/OrderContext";
@@ -78,6 +79,11 @@ function Sider({ menuOpen, onToggleMenu, isPermanent }: SiderProps) {
                 text: 'My Elements',
                 icon: <AutoAwesomeMotionIcon />,
                 path: '/sellerelements',
+            });
+            userMenuItems.push({
+                text: 'My Orders',
+                icon: <ShopTwoIcon />,
+                path: '/sellerorders',
             });
         }
 

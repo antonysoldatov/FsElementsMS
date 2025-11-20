@@ -43,7 +43,7 @@ export interface Order {
     elements: ElementOrder[],
     phoneNumber: string,
     address: string,
-    createdAt: Date
+    createdAt: string
 }
 
 export interface ElementOrder {

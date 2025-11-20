@@ -7,6 +7,7 @@ import MyElementsPage from './pages/Seller/MyElementsPage'
 import AddEditElementPage from './pages/Seller/AddEditElementPage'
 import MultiContextProvider from './storage/MultiContextProvider'
 import MakeOrderPage from './pages/MakeOrderPage'
+import MyOrdersPage from './pages/Seller/MyOrdersPage'
 
 function App() {
     return (
@@ -19,6 +20,7 @@ function App() {
                         <Route path="signout" element={<SignOutPage />} />
                         <Route path="sellerelements" element={<MyElementsPage />} />
                         <Route path="sellereditelement/:id?" element={<AddEditElementPage />} />
+                        <Route path="sellerorders" element={<MyOrdersPage />} />
                         <Route path="makeorder" element={<MakeOrderPage />} />
                     </Route>
                 </Routes>
