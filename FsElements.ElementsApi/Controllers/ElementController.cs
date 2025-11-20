@@ -102,8 +102,8 @@ namespace FsElements.ElementsApi.Controllers
         public async Task<ActionResult<List<ElementDto>>> GetWithFilter([FromQuery] string? categoryId, [FromQuery] string? formId)
         {
             var elements = await elementsRepository.GetAsync(x =>
-                (string.IsNullOrEmpty(categoryId) ? true : x.CategoryId.ToString() == categoryId) &&
-                (string.IsNullOrEmpty(formId) ? true : x.ElementFormId.ToString() == formId)
+                (string.IsNullOrEmpty(categoryId) ? true : x.CategoryId == Guid.Parse(categoryId)) &&
+                (string.IsNullOrEmpty(formId) ? true : x.ElementFormId == Guid.Parse(formId))
             );
             var list = elements.Select(x => x.ToDto()).ToList();
             return Ok(list);

@@ -16,12 +16,18 @@ services:
     build:
       context: .
       dockerfile: FsElements.Auth/Dockerfile
+    ports:
+        - 52080:8080
+        - 52081:8081
 
   fselements.formsapi:
     image: ${DOCKER_REGISTRY-}fselementsformsapi
     build:
       context: .
       dockerfile: FsElements.FormsApi/Dockerfile
+    ports:
+        - 52180:8080
+        - 52181:8081
 
 
   fselements.ordersapi:
@@ -29,6 +35,9 @@ services:
     build:
       context: .
       dockerfile: FsElements.OrdersApi/Dockerfile
+    ports:
+        - 52380:8080
+        - 52381:8081
 
 
   fselements.elementsapi:
@@ -36,6 +45,9 @@ services:
     build:
       context: .
       dockerfile: FsElements.ElementsApi/Dockerfile
+    ports:
+        - 52280:8080
+        - 52281:8081
 
 
   # fselements.frontadmin:

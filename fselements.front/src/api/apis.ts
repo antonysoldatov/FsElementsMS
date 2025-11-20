@@ -1,10 +1,11 @@
 import axios, { type AxiosResponse } from "axios";
 import { jwtDecode } from "jwt-decode";
-import type { ElementCategory, ElementForm, Element } from "../data/dto";
+import type { ElementCategory, ElementForm, Element, MakeOrder, Order } from "../data/dto";
 
-const AUTH_BASE_URL = "https://localhost:52456";
-const FORMS_BASE_URL = "https://localhost:52453";
-const ELEMENTS_BASE_URL = "https://localhost:52460";
+const AUTH_BASE_URL = "https://localhost:52081";
+const FORMS_BASE_URL = "https://localhost:52181";
+const ELEMENTS_BASE_URL = "https://localhost:52281";
+const ORDERS_BASE_URL = "https://localhost:52381";
 
 interface LoginRequest {
     email: string,
@@ -118,6 +119,43 @@ const deleteElement = async (elementId: string): Promise<void> => {
     }
 }
 
+const getElements = async (categoryId: string | null, formId: string | null): Promise<Element[]> => {
+    try {
+        let url = ELEMENTS_BASE_URL + `/Element/GetWithFilter?`;
+        if (categoryId) {
+            url += `categoryId=${categoryId}&`;
+        }
+        if (formId) {
+            url += `formId=${formId}&`;
+        }
+        const response: AxiosResponse<Element[]> = await axios.get(url);
+        return response.data;
+    } catch (error) {
+        console.error("Error:", error);
+        throw error;
+    }
+}
+
+const makeOrder = async (order: MakeOrder): Promise<void> => {
+    try {
+        const response = await axios.post(ORDERS_BASE_URL + `/Order/MakeOrder`, order);
+        return;
+    } catch (error) {
+        console.error("Error:", error);
+        throw error;
+    }
+}
+
+const getMyOrders = async (sellerId: string): Promise<Order[]> => {
+    try {
+        const response: AxiosResponse<Order[]> = await axios.get(ORDERS_BASE_URL + `/Order/GetBySellerId?id=${sellerId}`);
+        return response.data;
+    } catch (error) {
+        console.error("Error:", error);
+        throw error;
+    }
+}
+
 
 const api = {
     authToken: '',
@@ -132,7 +170,12 @@ const api = {
         getElementById: getElementById,
         saveElement: saveElement,
         deleteElement: deleteElement,
+        getElements: getElements
     },
+    order: {
+        makeOrder: makeOrder,
+        getMyOrders: getMyOrders
+    }
 };
 
 export default api;

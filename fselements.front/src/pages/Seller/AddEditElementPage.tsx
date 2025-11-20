@@ -27,7 +27,6 @@ const AddEditElementPage = () => {
 
     useEffect(() => {
         if (formsState.forms.length != 0 && formsState.categories.length != 0) {
-            console.log("Forms and categories loaded");
             if (params.id) {
                 api.elements.getElementById(params.id)
                     .then(el => {

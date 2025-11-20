@@ -23,3 +23,32 @@ export interface Element {
     categoryId: string,
     sellerId: string
 }
+
+export interface MakeOrder {
+    elements: ElementMakeOrder[],
+    sellerId: string,
+    phoneNumber: string,
+    address: string
+}
+
+export interface ElementMakeOrder {
+    elementId: string,
+    count: number,
+    sellerId: string,
+}
+
+export interface Order {
+    id: string,
+    sellerId: string,
+    elements: ElementOrder[],
+    phoneNumber: string,
+    address: string,
+    createdAt: Date
+}
+
+export interface ElementOrder {
+    elementId: string,
+    count: number,
+    uniqueCode: string,
+    name: string
+}

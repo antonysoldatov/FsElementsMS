@@ -3,8 +3,10 @@ import HomeIcon from '@mui/icons-material/Home';
 import LoginIcon from '@mui/icons-material/Login';
 import LogoutIcon from '@mui/icons-material/Logout';
 import AutoAwesomeMotionIcon from '@mui/icons-material/AutoAwesomeMotion';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { useUser } from "../storage/UserContext";
 import { Link } from "react-router-dom";
+import { useOrder } from "../storage/OrderContext";
 
 export interface SiderProps {
     menuOpen: boolean;
@@ -25,6 +27,11 @@ const menuItems: MenuItem[] = [
         text: 'Home',
         icon: <HomeIcon />,
         path: '/',
+    },
+    {
+        text: 'Make Order',
+        icon: <ShoppingCartIcon />,
+        path: '/makeorder',
     }
 ];
 
@@ -51,15 +58,18 @@ const getMenuItemView = (item: MenuItem) => {
 }
 
 function Sider({ menuOpen, onToggleMenu, isPermanent }: SiderProps) {
+    const user = useUser();
+    const order = useOrder();
+
     const onDrawerClose = () => {
         if (menuOpen) onToggleMenu();
     };
-
     const onBoxClick = () => {
         if (menuOpen) onToggleMenu();
     };
 
-    const user = useUser();
+    const makeOrderMenuItem = menuItems.find(item => item.path == '/makeorder')!;
+    makeOrderMenuItem.text = 'Make Order ' + (order.elementsOrder.length > 0 ? `(${order.elementsOrder.length})` : '');
 
     const userMenuItems: MenuItem[] = [];
     if (user.isAuthenticated) {
