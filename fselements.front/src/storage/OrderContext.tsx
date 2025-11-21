@@ -1,5 +1,6 @@
 import { createContext, useContext, useReducer, type Dispatch } from "react";
 import type { ElementMakeOrder } from "../data/dto";
+import { setCookie } from "typescript-cookie";
 
 export interface OrderState {
     elementsOrder: ElementMakeOrder[]
@@ -10,6 +11,7 @@ type OrderAction =
     | { type: "Remove"; elementId: string }
     | { type: "ChangeCount"; elementId: string, count: number }
     | { type: "Clear" }
+    | { type: "Init"; data: OrderState }
 
 
 const OrderContext = createContext<OrderState | undefined>(undefined);
@@ -47,21 +49,24 @@ export const OrderContextProvider: React.FC<React.PropsWithChildren> = ({ childr
 }
 
 const reducer = (state: OrderState, action: OrderAction): OrderState => {
+    let stateNew = state;
     switch (action.type) {
         case "Add": {
-            return {
+            stateNew = {
                 ...state,
                 elementsOrder: [...state.elementsOrder, action.element]
             };
+            break;
         }
         case "Remove": {
-            return {
+            stateNew = {
                 ...state,
                 elementsOrder: state.elementsOrder.filter(e => e.elementId != action.elementId)
             };
+            break;
         }
         case 'ChangeCount': {
-            return {
+            stateNew = {
                 ...state,
                 elementsOrder: state.elementsOrder.map(e => {
                     if (e.elementId == action.elementId) {
@@ -70,14 +75,20 @@ const reducer = (state: OrderState, action: OrderAction): OrderState => {
                     return e;
                 })
             };
+            break;
         }
         case "Clear": {
-            return initialState;
+            stateNew = initialState;
+            break;
         }
-        default: {
-            return state;
+        case "Init": {
+            return action.data;
         }
     }
+
+    setCookie('order', JSON.stringify(stateNew));
+
+    return stateNew;
 }
 
 const initialState: OrderState = {

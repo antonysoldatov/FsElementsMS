@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useReducer, type Dispatch } from 'react';
 import api, { type LoginResponse } from '../api/apis';
+import { setCookie } from 'typescript-cookie';
 
 const UserContext = createContext<UserState | undefined>(undefined);
 
@@ -49,7 +50,7 @@ type UserAction =
     | { type: "Logout" }
 
 
-interface UserState {
+export interface UserState {
     isAuthenticated: boolean,
     token?: string,
     userId?: string,
@@ -57,28 +58,30 @@ interface UserState {
 }
 
 function userReducer(user: UserState, action: UserAction): UserState {
+    let userNew = user;
     switch (action.type) {
         case UserActionType.Login: {
-            return {
+            userNew = {
                 ...user,
                 isAuthenticated: true,
                 token: action.payload.accessToken,
                 userId: action.payload.userId,
                 role: action.payload.role,
             };
+            break;
         }
         case UserActionType.Logout: {
-            return {
+            userNew = {
                 ...user,
                 isAuthenticated: false,
                 token: undefined,
                 userId: undefined,
             };
-        }
-        default: {
-            return user;
-        }
+            break;
+        } 
     }
+    setCookie('user', JSON.stringify(userNew));
+    return userNew;
 }
 
 const initialUser: UserState = {

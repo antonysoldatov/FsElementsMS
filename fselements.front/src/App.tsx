@@ -8,23 +8,26 @@ import AddEditElementPage from './pages/Seller/AddEditElementPage'
 import MultiContextProvider from './storage/MultiContextProvider'
 import MakeOrderPage from './pages/MakeOrderPage'
 import MyOrdersPage from './pages/Seller/MyOrdersPage'
+import AppStateLoader from './storage/AppStateLoader'
 
 function App() {
     return (
         <MultiContextProvider>
-            <BrowserRouter>
-                <Routes>
-                    <Route path="/" element={<MainLayout />}>
-                        <Route index element={<HomePage />} />
-                        <Route path="signin" element={<SignInPage />} />
-                        <Route path="signout" element={<SignOutPage />} />
-                        <Route path="sellerelements" element={<MyElementsPage />} />
-                        <Route path="sellereditelement/:id?" element={<AddEditElementPage />} />
-                        <Route path="sellerorders" element={<MyOrdersPage />} />
-                        <Route path="makeorder" element={<MakeOrderPage />} />
-                    </Route>
-                </Routes>
-            </BrowserRouter>
+            <AppStateLoader>
+                <BrowserRouter>
+                    <Routes>
+                        <Route path="/" element={<MainLayout />}>
+                            <Route index element={<HomePage />} />
+                            <Route path="signin" element={<SignInPage />} />
+                            <Route path="signout" element={<SignOutPage />} />
+                            <Route path="sellerelements" element={<MyElementsPage />} />
+                            <Route path="sellereditelement/:id?" element={<AddEditElementPage />} />
+                            <Route path="sellerorders" element={<MyOrdersPage />} />
+                            <Route path="makeorder" element={<MakeOrderPage />} />
+                        </Route>
+                    </Routes>
+                </BrowserRouter>
+            </AppStateLoader>
         </MultiContextProvider>
     )
 }
