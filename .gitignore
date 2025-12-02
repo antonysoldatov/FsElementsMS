@@ -364,3 +364,4 @@ FodyWeavers.xsd
 
 /FsElements.FormsApi/Images/*
 /auth-deployment.yaml
+/rabbitmq-deployment.yaml
