@@ -19,6 +19,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FsElements.ElementsApi", "F
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "fselements.front", "fselements.front\fselements.front.esproj", "{ACC839C3-4A7F-C178-3B9D-5420B4CE519A}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "deployment", "deployment", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+	ProjectSection(SolutionItems) = preProject
+		auth-deployment.yaml = auth-deployment.yaml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

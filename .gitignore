@@ -363,3 +363,4 @@ MigrationBackup/
 FodyWeavers.xsd
 
 /FsElements.FormsApi/Images/*
+/auth-deployment.yaml
