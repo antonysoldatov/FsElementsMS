@@ -8,6 +8,8 @@ using MongoDB.Driver;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.Configure<AzureBlobSettings>(builder.Configuration.GetSection("AzureBlobSettings"));
+
 // Add services to the container.
 builder.Services.AddAuthenticationWithJwtBearer(builder.Configuration);
 builder.Services.AddAuthorization();
@@ -20,7 +22,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddMongoClientWithDatabase(builder.Configuration);
 builder.Services.AddTransient<IMongoRepository<ElementCategory>, MongoRepository<ElementCategory>>();
 builder.Services.AddTransient<IMongoRepository<ElementForm>, MongoRepository<ElementForm>>();
-builder.Services.AddScoped<IFileManageService, FileManageService>();
+builder.Services.AddScoped<IFileManageService, AzureBlobFileManagerService>();
 builder.Services.AddCorsWithAllowClientPolicy("AllowSpecificClient");
 
 var app = builder.Build();

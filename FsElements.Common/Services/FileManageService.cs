@@ -1,11 +1,6 @@
 ﻿
 namespace FsElements.Common.Services
 {
-    public interface IFileManageService
-    {
-        Task<string> SaveFile(string fileBase64, string folder);
-    }
-
     public class FileManageService : IFileManageService
     {
         public async Task<string> SaveFile(string fileBase64, string folder)
@@ -33,11 +28,5 @@ namespace FsElements.Common.Services
             }
             return $"/Images/{folder}/{fileName}";
         }
-    }
-
-    public static class FileFolders
-    {
-        public const string Forms = "Forms";
-        public const string Elements = "Elements";
     }
 }
