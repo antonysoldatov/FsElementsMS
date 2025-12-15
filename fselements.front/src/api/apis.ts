@@ -2,10 +2,10 @@ import axios, { type AxiosResponse } from "axios";
 import { jwtDecode } from "jwt-decode";
 import type { ElementCategory, ElementForm, Element, MakeOrder, Order } from "../data/dto";
 
-const AUTH_BASE_URL = "https://localhost:52081";
-const FORMS_BASE_URL = "https://localhost:52181";
-const ELEMENTS_BASE_URL = "https://localhost:52281";
-const ORDERS_BASE_URL = "https://localhost:52381";
+const AUTH_BASE_URL = "https://localhost:62081";
+const FORMS_BASE_URL = "https://localhost:62181";
+const ELEMENTS_BASE_URL = "https://localhost:62281";
+const ORDERS_BASE_URL = "https://localhost:62381";
 
 interface LoginRequest {
     email: string,
@@ -73,7 +73,6 @@ const getAllCatergories = async (): Promise<ElementCategory[]> => {
 const getAllForms = async (): Promise<ElementForm[]> => {
     try {
         const response: AxiosResponse<ElementForm[]> = await axios.get(FORMS_BASE_URL + '/Form/GetAll');
-        response.data.forEach(form => form.image = FORMS_BASE_URL + form.image);
         return response.data;
     } catch (error) {
         console.error("Error:", error);

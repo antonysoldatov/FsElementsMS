@@ -77,7 +77,12 @@ function HomePage() {
             }
 
             {formFiltered.length != 0 &&
-                <Box overflow="auto" mt={2}>
+                <Box
+                    sx={{
+                        overflowX: 'scroll',
+                        width: '100%',
+                        mt: 2
+                    }}>
                     <Stack direction="row">
                         <Box sx={{
                             width: 50,
