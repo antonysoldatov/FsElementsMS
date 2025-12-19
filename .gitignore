@@ -365,3 +365,10 @@ FodyWeavers.xsd
 /FsElements.FormsApi/Images/*
 /auth-deployment.yaml
 /rabbitmq-deployment.yaml
+
+.env
+/FsElements.Auth/Properties/ServiceDependencies/fsauth - Zip Deploy/profile.arm.json
+/FsElements.ElementsApi/Properties/ServiceDependencies/fselementsapi - Zip Deploy/profile.arm.json
+/FsElements.FormsApi/Properties/ServiceDependencies/fsforms - Zip Deploy/profile.arm.json
+/FsElements.FrontAdmin/Properties/ServiceDependencies/fsadminpanel - Web Deploy/profile.arm.json
+/FsElements.OrdersApi/Properties/ServiceDependencies/orders - Zip Deploy/profile.arm.json

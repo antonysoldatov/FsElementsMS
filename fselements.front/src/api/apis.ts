@@ -2,10 +2,10 @@ import axios, { type AxiosResponse } from "axios";
 import { jwtDecode } from "jwt-decode";
 import type { ElementCategory, ElementForm, Element, MakeOrder, Order } from "../data/dto";
 
-const AUTH_BASE_URL = "https://localhost:62081";
-const FORMS_BASE_URL = "https://localhost:62181";
-const ELEMENTS_BASE_URL = "https://localhost:62281";
-const ORDERS_BASE_URL = "https://localhost:62381";
+const AUTH_BASE_URL = "https://fsauth-fncpcnahb7a5cdck.westeurope-01.azurewebsites.net";
+const FORMS_BASE_URL = "https://fsforms-fuabfce2frfxaefu.westeurope-01.azurewebsites.net";
+const ELEMENTS_BASE_URL = "https://fselementsapi-b7hyfefcaqfccscn.westeurope-01.azurewebsites.net";
+const ORDERS_BASE_URL = "https://orders-gcfcejdse6bbfgbh.westeurope-01.azurewebsites.net";
 
 interface LoginRequest {
     email: string,
